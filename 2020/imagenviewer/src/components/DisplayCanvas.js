@@ -11,15 +11,13 @@ class DisplayCanvas extends React.Component {
     let cindex={
       1: ["#000","#fff"],
       2: ["#000","#555","#aaa","#fff"],
-      3: ["#000","#00f","#0f0","#0ff","#f00","#f0f","#ff0","#fff"]
+      4: ["#000","#008","#00f","#088","#0ff","#080","#0f0","#800","#880","#808","#f00","#f0f","#ff0","#888","#ccc","#fff"]
     }
     let depth=this.props.colormode
 
     for(let y=0; y<16; y++) {
       for(let x=0; x<16; x++) {
-        console.log({x:x,y:y})
         numberindex=Math.floor((x+y*16)/16)
-        console.log(numberindex)
         if(numberindex<=this.props.numbers.length) {
           let mask = 0xffff & ((2**depth)-1)
           pixels.push(
@@ -29,7 +27,7 @@ class DisplayCanvas extends React.Component {
       }
     }
     return(
-      <svg viewBox="0 0 320 320" width="320px" height="320px" style={{backgroundColor:"black"}}>
+      <svg viewBox={"0 0 320 320"} width="320px" height="320px" style={{backgroundColor:"black",marginRight:"16px"}}>
         {pixels}
       </svg>
     )
