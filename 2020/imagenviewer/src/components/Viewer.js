@@ -36,7 +36,7 @@ class Viewer extends React.Component {
           onestring: onestring,
           numbers: numbers
         })
-        setTimeout(this.updateData,100)
+        setTimeout(this.updateData,500)
       });
   }
 
