@@ -1,6 +1,6 @@
 ![ImageN Logo](/2020/html/imagen.png)
 
-ImageN is an image generator that uses a single integer with an accuracy of 65535 bits to generate every possible image. The generator initialised the integer with the value 0 and now constantly adds the value 1 in order to generate every possible pattern and so every possible image.
+ImageN is an image generator that uses a single integer with an accuracy of 65535 bits to generate every possible image. The generator initialized the integer with the value 0 and now constantly adds the value 1 in order to generate every possible pattern and thus every possible image.
 
 ![ImageN Logo](/2000/html/numbers.gif)
 
