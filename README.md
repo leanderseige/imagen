@@ -1,8 +1,8 @@
 ![ImageN Logo](/2020/html/imagen-tight.png)
 
-ImageN is an image generator that uses a single integer with an accuracy of 65535 bits to generate every possible image. The generator initialized the integer with the value 0 and now constantly adds the value 1 in order to generate every possible pattern and thus every possible image.
+ImageN is an art project that works with the contrast of computability and complexity. Visit the ImageN server: https://imagen.manducus.net
 
-ImageN is an art project that works with the contrast of computability and complexity.
+ImageN is an image generator that uses a single integer with an accuracy of 65535 bits to generate every possible image. The generator initialized the integer with the value 0 and now constantly adds the value 1 in order to generate every possible pattern and thus every possible image.
 
 ![ImageN Logo](/2000/html/numbers.gif)
 
@@ -15,8 +15,6 @@ The original interface was a Java applet with many options to turn the pattern i
 ![ImageN Logo](/2000/html/bits.gif)
 
 The generator was my intermediate diploma at the Academy of Fine Arts Leipzig (HGB Leipzig). It went online in July 2000. From 2004 to 2020 ImageN was offline most of the time.
-
-# Visit the ImageN server: https://imagen.manducus.net
 
 # This Repository
 
