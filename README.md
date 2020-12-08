@@ -2,6 +2,8 @@
 
 ImageN is an image generator that uses a single integer with an accuracy of 65535 bits to generate every possible image. The generator initialized the integer with the value 0 and now constantly adds the value 1 in order to generate every possible pattern and thus every possible image.
 
+ImageN is an art project that works with the contrast of computability and complexity.
+
 ![ImageN Logo](/2000/html/numbers.gif)
 
 The generator is a tiny C programm calculating millions of patterns per second.
