@@ -1,0 +1,18 @@
+<html>
+    <head>
+    <meta name="description" content="The universal image generator.">
+    <meta name="keywords" content="Imagen,Determinism,Art,Determinismus,Kunst">   
+	<meta name="author" content="Leander Seige">       
+	<title>Imagen</title>
+	<body bgcolor=#333366 text=#8888FF> <!-- bgcolor=#333366 -->
+    </head>
+    <body>
+	<center>
+		<applet code=ImagenApplet.class width=700 height=400>
+		alt="Unknown Error 1."
+		Unknown Error 2.
+		</applet>
+	</center>
+    </body>
+</html>
+

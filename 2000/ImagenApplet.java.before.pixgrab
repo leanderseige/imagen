@@ -1,0 +1,359 @@
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+import java.applet.*;
+import java.net.*;
+
+public class ImagenApplet
+extends java.applet.Applet
+implements ActionListener
+{
+
+	int  i,j,tempres,tempbit, m, k, trunctest, waitsecs,a,b,c,d;
+	Integer resolution, bitdepth, colormode, mixermode;
+
+	Panel panel, npanel;
+
+	Font font;
+
+	String SSString;
+
+	Button ubutton, abutton, dbutton, ebutton, sbutton, aubutton;
+	List rlist, blist;
+	CheckboxGroup cbg,cbgmd;
+	Checkbox fcheck,gcheck,maxfac,cbmix,cbdiag;
+	Label rlabel, blabel, slabel;
+	TextField autopause;
+
+	MediaTracker mt;
+
+	Thread leothread;
+	boolean running=false,lastscale=false;
+
+	Image image,himage;
+
+	URL docurl,emailurl,sourceurl;
+
+	Graphics g;
+
+	boolean test;
+
+	//BufferedImage bim,bimz;
+
+	public void paint(Graphics g)
+	{
+		g.setColor(new Color(56,56,112));
+		g.draw3DRect(195,10,380,380,true);
+		g.draw3DRect(196,11,378,378,true);
+
+		a=image.getHeight(this);										
+																		
+		if ( maxfac.getState()&&(a<4) )
+		{	
+			if(!lastscale)
+			{	g.setColor(new Color(51,51,102));
+				g.fillRect(205,20,360,360);
+			}
+			g.drawImage(image, 258,73, 254, 254, Color.black ,this);
+			lastscale=true;	
+		}
+		else
+		{	g.drawImage(image, 205,20, 360, 360, Color.black ,this); lastscale=false;	}
+	}
+
+	public void update(Graphics g)
+	{
+
+		paint(g);
+	}
+
+	public String getAppletInfo()
+	{
+		return "Imagen Remote Control Applet (c) 2000 Leander Seige";
+ 	}
+
+	public void start()
+	{
+		gifholen();
+		//repaint();
+	}
+
+	public void init()
+	{
+		g=getGraphics();
+		
+		try { docurl = new URL (getDocumentBase(),"doc.html"); }
+		catch (Exception e) { }
+		try { emailurl = new URL (getDocumentBase(),"email.html"); }
+		catch (Exception e) { }
+		try { sourceurl = new URL (getDocumentBase(),"source.html"); }
+		catch (Exception e) { }		
+	
+		setBackground(new Color(51,51,102));
+		setForeground(Color.black);
+	
+		font = new Font("SansSerif",Font.PLAIN,12);
+		setFont(font);
+
+		setLayout(null);
+
+		panel = new Panel();
+		panel.setLayout(null);
+		panel.setBounds(0,0,180,500);
+
+			npanel = new Panel();
+			npanel.setLayout(null);
+			npanel.setBounds(600,0,100,500);
+
+		ubutton = new Button("Update");
+		ubutton.setBounds(20,0,140,45);
+		ubutton.setBackground(Color.lightGray);
+		abutton = new Button("Auto Update");
+		abutton.setBounds(20,55,80,40);
+		abutton.setBackground(Color.lightGray);	
+
+			dbutton = new Button("Documentation");
+			dbutton.setBounds(0,315,100,25);
+			dbutton.setBackground(new Color(71,71,142));
+			dbutton.setForeground(new Color(128,128,255));
+			ebutton = new Button("E-Mail");
+			ebutton.setBounds(0,375,100,25);
+			ebutton.setBackground(new Color(71,71,142));
+			ebutton.setForeground(new Color(128,128,255));										
+			sbutton = new Button("Sourcecodes");
+			sbutton.setBounds(0,345,100,25);
+			sbutton.setBackground(new Color(71,71,142));
+			sbutton.setForeground(new Color(128,128,255));				
+				aubutton = new Button("Sound");
+				aubutton.setBounds(0,0,100,25);
+				aubutton.setBackground(Color.lightGray);
+		
+
+		ubutton.addActionListener(this);
+		abutton.addActionListener(this);
+
+			dbutton.addActionListener(this);
+			ebutton.addActionListener(this);
+			sbutton.addActionListener(this);
+				aubutton.addActionListener(this);
+
+		rlist = new List();
+		for (i = 2; i<=256; i++)
+		{
+			rlist.add(i+" x "+i);
+		}
+
+		blist = new List();
+		for (i = 1; i<=8; i++)
+		{
+			blist.add(i+" Bit");
+		}
+
+		rlist.setBounds(20,120,140,100);
+		blist.setBounds(20,250,140,75);
+		rlist.setBackground(Color.white);
+		rlist.setForeground(Color.black);		
+		blist.setBackground(Color.white);
+		blist.setForeground(Color.black);
+		rlist.select(3);rlist.makeVisible(3);
+		blist.select(0); blist.makeVisible(0);
+
+		rlabel=new Label("Resolution:");
+		blabel=new Label("Color Depth:");
+		slabel=new Label("Sec.");
+		rlabel.setBounds(0,100,100,16);blabel.setBounds(0,230,100,16);slabel.setBounds(150,60,30,30);
+		rlabel.setForeground(Color.white);blabel.setForeground(Color.white);slabel.setForeground(Color.white);
+
+		cbg = new CheckboxGroup();
+		fcheck = new Checkbox("Color (RGB)",cbg,false);
+		gcheck = new Checkbox("Gray / BW",cbg,true);
+			cbmix = new Checkbox("Spiral",false);
+			cbdiag= new Checkbox("Diagonal",false);
+				maxfac = new Checkbox("Safe Scaling",true);
+
+		fcheck.setBounds(10,332,88,25);
+		gcheck.setBounds(100,332,88,25);
+			cbdiag.setBounds(10,378,88,25);
+			cbmix.setBounds(100,378,88,25);	
+				maxfac.setBounds(45,355,88,25);		
+		fcheck.setForeground(Color.white);
+		gcheck.setForeground(Color.white);
+			cbmix.setForeground(Color.white);
+			cbdiag.setForeground(Color.white);
+				maxfac.setForeground(Color.white);
+
+		autopause = new TextField("2",2);
+		autopause.setBounds( 105, 60,40,30);
+		autopause.setForeground(Color.black);
+		autopause.setBackground(Color.white); 
+
+		panel.add(ubutton);
+		panel.add(abutton);
+		panel.add(rlist);
+		panel.add(blist);
+		panel.add(rlabel);
+		panel.add(blabel);
+		panel.add(slabel);
+		panel.add(fcheck);
+		panel.add(gcheck);
+		panel.add(maxfac);
+		panel.add(cbmix);
+		panel.add(cbdiag);
+		panel.add(autopause);
+
+			npanel.add(dbutton);
+			npanel.add(ebutton);
+			npanel.add(sbutton);
+			npanel.add(aubutton);
+
+
+		add(panel);
+
+			add(npanel);
+		
+	}
+
+
+
+	public void actionPerformed (ActionEvent ActEvt)
+	{	
+		String cmd = ActEvt.getActionCommand();
+
+		if (cmd=="Update")
+		{
+			ubutton.setEnabled(false);
+			gifholen();
+			ubutton.setEnabled(true);
+		}
+
+		if (cmd=="Auto Update" || cmd=="Stop")
+		{
+			if (running==false)
+			{
+				leothread = new autobild();
+				leothread.start();
+				ubutton.setEnabled(false);
+				abutton.setLabel("Stop");					
+				running=true;
+			}
+			else
+			{
+				leothread = null;	
+				ubutton.setEnabled(true);
+				abutton.setLabel("Auto Update");
+				running=false;
+			}
+		}
+
+		if (cmd=="Documentation")
+		{
+			getAppletContext().showDocument(docurl,"Documentation");	
+		}
+		if (cmd=="E-Mail")
+		{
+			getAppletContext().showDocument(emailurl,"E-Mail");	
+		}
+		if (cmd=="Sourcecodes")
+		{
+			getAppletContext().showDocument(sourceurl,"Sourcecodes");	
+		}
+		if (cmd=="Sound")
+		{
+			bitdepth   = new Integer (blist.getSelectedIndex()+1);
+			play(getDocumentBase(), "cgi-bin/dimagen.cgi?1+"+bitdepth.toString()+"+1+1+1");	
+		}
+
+	}
+
+
+
+	public void gifholen()
+	{	
+		tempres = rlist.getSelectedIndex()+2;
+		tempbit = blist.getSelectedIndex()+1;
+
+		if (fcheck.getState())	{	colormode = new Integer ( 3 );	}
+		else					{	colormode = new Integer ( 1 );	}
+
+		mixermode = new Integer ( 1 );
+		if (cbdiag.getState())	{	mixermode = new Integer ( 2 );	};
+		if ( cbmix.getState())	{	mixermode = new Integer ( 3 );	};
+		if ( cbmix.getState() && cbdiag.getState() )	{	mixermode = new Integer ( 5 );	};
+
+			trunctest=0;
+			m=tempres*tempres;
+			k=tempres*tempres*tempbit;
+			if ( k > 65536)  { tempbit=65536/m; trunctest=1; }
+			k=tempres*tempres*tempbit;
+			if ( colormode.intValue()==3 && k > 16384 ) { tempres=tempres/2; trunctest=1; }
+
+		resolution = new Integer (tempres);
+		bitdepth   = new Integer (tempbit);
+
+		SSString="Resolution: "+resolution.toString()+"x"+resolution.toString()+"    Color Depth: "+bitdepth.toString()+" Bit / Channel";
+		if (trunctest==1) { SSString="TRUNCATED:    "+SSString; } else { SSString="COMPLETE:    "+SSString; }
+		if (colormode.intValue()==3) { SSString=SSString+"    Mode: RGB"; } else { SSString=SSString+"    Mode: Grayscale/BW"; }
+	
+		showStatus(SSString);
+
+		himage = getImage (getDocumentBase(), "cgi-bin/dimagen.cgi?"+resolution.toString()+"+"+bitdepth.toString()+"+"+colormode.toString()+"+"+mixermode.toString() );
+
+		mt = new MediaTracker(this);
+		mt.addImage(himage,0);
+			try{ mt.waitForID(0);}
+			catch (InterruptedException e) { showStatus("INTERNAL ERROR!"); }
+		mt.removeImage(himage,0);
+
+		image=himage;
+		himage.flush();
+
+	//	if (cbdiag.getState()){pdiager();}
+
+		repaint();
+		
+	}
+
+
+	
+	//public void pdiager()
+	//{
+	//	bim  = (BufferedImage)image;
+	//	bimz = (BufferedImage)image;
+	//	int h = bim.getHeight();
+	//	
+	//		for (i=1; i<=h; i++)
+	//		{
+	//			for (j=1; j<=h; j++)
+	//			{
+	//				bimz.setRGB(i-1,(j-1+i-1)%(h-1), bim.getRGB(i-1,j-1) );
+	//			}
+	//		}
+	//	image=(Image)bimz;
+	//}
+
+
+	public class autobild extends Thread
+	{	        
+		public void run ()
+		{
+			Thread currentThread = Thread.currentThread();
+
+			while (currentThread==leothread)
+			{	
+				gifholen();
+				//repaint();
+
+				try
+				{	waitsecs=(int)((Float.valueOf(autopause.getText())).floatValue()*10);	}	
+				catch (NumberFormatException e) { waitsecs=20; }
+				if (waitsecs==0) { waitsecs=1; }			
+				
+				try { currentThread.sleep(waitsecs*100); }
+				catch (InterruptedException e) { break; }
+			}
+			
+		}
+	}
+
+
+}

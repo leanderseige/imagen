@@ -1,0 +1,7 @@
+genima.raw	konvertierter seed, raw grayscale bytes
+genima.gif	endgueltiges gif bild
+impid		PID von imagen, bilderrenderer
+syncpid		PID von stool, syncronisationstool fuer skript
+seed		aktueller Datensatz
+seed.s		letzter Datensatz, Sicherheitskopie
+seed.xx		diverse Datensaetze

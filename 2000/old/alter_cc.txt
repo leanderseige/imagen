@@ -1,0 +1,1 @@
+cc -o stand standalone2.C -lglut -lGLU -lGL -lXmu -lXi -lXext -lX11 -lm -L/usr/X11R6/lib -idirafter /usr/X11R6/include -DCPU=686 -O8 

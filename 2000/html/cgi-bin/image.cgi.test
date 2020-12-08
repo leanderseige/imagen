@@ -1,0 +1,3 @@
+#!/bin/sh
+echo -e "Content-Type: image/gif\n"
+cat ../genima.gif

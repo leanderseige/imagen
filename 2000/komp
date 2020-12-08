@@ -1,0 +1,3 @@
+pgcc conv2.c -o conv -march=pentiumpro -mmx-only -O99 -funroll-loops -fstrength-reduce -fthread-jumps
+pgcc crec5.c -o crec -march=pentiumpro -mmx-only -O99 -funroll-loops -fstrength-reduce -fthread-jumps 
+pgcc synctool.c -o stool -march=pentiumpro -mmx-only -O99 -funroll-loops -fstrength-reduce -fthread-jumps   

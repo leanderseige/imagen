@@ -1,0 +1,24 @@
+<html>
+    <head>
+	<title>Calculator Form</title>
+	<body bgcolor=#333366 text=#FFFFFF> 
+    </head>
+    <body>
+	<center>
+	<form action="/cgi-bin/upload.cgi" method=post enctype="multipart/form-data">
+	<p>Submit A JPEG-File.</p>
+	<p>A Small Applet Will Calculate The Time Until Your Image</p>
+	<p>Will Be Generated.</p>
+	<p>Please Don't Submit Pictures Larger Than 100.000 Bytes.</p>
+	<p>Only Jpeg Pictures Will Be Accepted.</p>
+	<p>Your Picture Will Be Shrinked To 64x64 Pixel / Grayscale.</p>				
+	<input type=file size=25 name="file" maxlength=100000 accept="image/jpeg"><br>
+	<input type=submit value="Submit">
+	</form>
+	<br>
+	<p>Loading The Image And The Applet May Take Some Time.</p>
+	<p>Please Be Patient.</p>
+	</center>
+    </body>
+</html>
+

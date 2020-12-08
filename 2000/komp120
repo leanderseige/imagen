@@ -1,0 +1,8 @@
+pgcc conv2.c -o conv -march=pentium -O99 -funroll-loops -fstrength-reduce -fthread-jumps
+pgcc crec5.c -o crec -march=pentium -O99 -funroll-loops -fstrength-reduce -fthread-jumps 
+pgcc synctool.c -o stool -march=pentium -O99 -funroll-loops -fstrength-reduce -fthread-jumps   
+pgcc upload.c -o upload.cgi -march=pentium -O99 -funroll-loops -fstrength-reduce -fthread-jumps 
+pgcc idump.c -o idump -march=pentium -O99 -funroll-loops -fstrength-reduce -fthread-jumps
+
+javac -O -d ./html/ ImagenApplet.java -classpath /usr/local/netscape/java/classes/java40.jar
+scp ./html/*.class 194.94.211.175:/imagen/html   

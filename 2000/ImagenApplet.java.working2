@@ -1,0 +1,204 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.*;
+import java.net.*;
+
+public class ImagenApplet
+extends java.applet.Applet
+implements ActionListener Runnable
+{
+
+	int  i, tempres   , tempbit, m, k;
+	Integer resolution, bitdepth, colormode;
+
+	Panel panel;
+
+	Font font;
+
+	Button ubutton, abutton;
+	List rlist, blist;
+	CheckboxGroup cbg;
+	Checkbox fcheck, gcheck;
+
+	MediaTracker mt;
+
+	Thread leothread;
+	boolean running=false;
+
+	Image image;
+	Dimension imagesize;
+
+
+
+	public void paint(Graphics g)
+	{
+		g.drawImage(image, 10, 10, 380, 380, this);
+	}
+
+
+
+	public String getAppletInfo()
+	{
+		return "Imagen Remote Control Applet (c) 2000 Leander Seige";
+ 	}
+
+
+
+	public void init()
+	{
+		setBackground(new Color(51,51,102));
+		setForeground(Color.black);
+	
+		font = new Font("SansSerif",Font.PLAIN,12);
+		setFont(font);
+
+		setLayout(null);
+
+		panel = new Panel();
+		panel.setLayout(null);
+		panel.setBounds(400,0,100,500);
+
+		ubutton = new Button("Update");
+		ubutton.setBounds(0,0,100,50);
+		ubutton.setBackground(Color.lightGray);
+
+		abutton = new Button("Auto Update");
+		abutton.setBounds(0,50,100,50);
+		abutton.setBackground(Color.lightGray);		
+
+		ubutton.addActionListener(this);
+		abutton.addActionListener(this);
+
+		rlist = new List();
+		for (i = 2; i<=256; i++)
+		{
+			rlist.add(i+" x "+i);
+		}
+
+		blist = new List();
+		for (i = 1; i<=8; i++)
+		{
+			blist.add(i+" Bit");
+		}
+
+		rlist.setBounds(0,100,100,100);
+		blist.setBounds(0,200,100,100);
+		rlist.setBackground(Color.white);
+		rlist.setForeground(Color.black);		
+		blist.setBackground(Color.white);
+		blist.setForeground(Color.black);
+		rlist.select(14);rlist.makeVisible(14);
+		blist.select(0); blist.makeVisible(0);
+
+		cbg = new CheckboxGroup();
+		fcheck = new Checkbox("Farbe",cbg,false);
+		gcheck = new Checkbox("Grau",cbg,true);
+
+		fcheck.setBounds(10,310,80,30);
+		gcheck.setBounds(10,340,80,30);		
+		fcheck.setForeground(Color.white);
+		gcheck.setForeground(Color.white);
+
+		panel.add(ubutton);
+		panel.add(abutton);
+		panel.add(rlist);
+		panel.add(blist);
+		panel.add(fcheck);
+		panel.add(gcheck);
+
+		add(panel);
+
+		leothread = new autobild();
+
+		mt = new MediaTracker(this);
+		
+	}
+
+
+
+	public void actionPerformed (ActionEvent ActEvt)
+	{	
+		String cmd = ActEvt.getActionCommand();
+
+		if (cmd=="Update")
+		{
+			showStatus("Update pressed");
+			gifholen();
+			repaint();
+		}
+		
+		if (cmd=="Auto Update")
+		{
+
+			if (running==false)
+			{
+				leothread.start();
+				showStatus("Thread Start.");
+				running=true;
+			}
+			else
+			{
+				leothread.interrupt();	
+				showStatus("Thread Stop.");				
+				running=false;
+			}
+
+		}
+	}
+
+
+
+	public void gifholen()
+	{	
+		tempres = rlist.getSelectedIndex()+2;
+		tempbit = blist.getSelectedIndex()+1;
+
+		if (fcheck.getState())	{	colormode = new Integer ( 3 );	}
+		else					{	colormode = new Integer ( 1 );	}
+
+			m=tempres*tempres;
+			k=tempres*tempres*tempbit;
+			if ( k > 65536)  { tempbit=65536/m; }
+			k=tempres*tempres*tempbit;
+			if ( colormode.intValue()==3 && k > 16384 ) { tempres=tempres/2; }
+
+		resolution = new Integer (tempres);
+		bitdepth   = new Integer (tempbit);
+
+		showStatus("Resolution: "+resolution.toString()+"x"+resolution.toString()+"      Color Depth: "+bitdepth.toString()+" Bit / Channel" );
+
+		Image himage = getImage (getDocumentBase(), "cgi-bin/dimagen.cgi?"+resolution.toString()+"+"+bitdepth.toString()+"+"+colormode.toString() );
+
+		mt.addImage(himage,0);
+			try{ mt.waitForAll();}
+			catch (InterruptedException e) { }
+		mt.removeImage(himage,0);
+
+			if ( himage.getHeight(this)!=tempres ) { showStatus("INTERNAL ERROR!");}
+
+		image=himage;
+		himage.flush();
+	}
+
+
+
+	public class autobild extends Thread
+	{
+		public void run ()
+		{
+			while (! leothread.isInterrupted() )
+			{
+
+				gifholen();
+				repaint();
+
+				try { sleep(2000); }
+				catch (InterruptedException e) { interrupt(); }
+			}
+			
+		}
+	}
+	
+
+
+}

@@ -1,0 +1,140 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.applet.*;
+import java.net.*;
+
+public class ImagenApplet
+extends java.applet.Applet
+implements ActionListener
+{
+
+
+
+	int  i;
+	Integer resolution, bitdepth, colormode;
+	Font font;
+	Button ubutton, abutton;
+	List rlist, blist;
+	CheckboxGroup cbg;
+	Checkbox fcheck, gcheck;
+	MediaTracker mt;
+	Image image;
+	Dimension imagesize;
+
+
+
+	public void paint(Graphics g)
+	{
+		g.drawImage(image, 10, 10, 380, 380, this);
+	}
+
+
+
+	public String getAppletInfo()
+	{
+		return "Imagen Remote Control Applet (c) 2000 Leander Seige";
+ 	}
+
+
+
+	public void init()
+	{
+		setBackground(new Color(51,51,102));
+		setForeground(Color.black);
+	
+		font = new Font("SansSerif",Font.PLAIN,12);
+		setFont(font);
+
+		setLayout(null);
+
+		ubutton = new Button("Update");
+		ubutton.setBounds(400,0,100,50);
+		ubutton.setBackground(Color.lightGray);
+		add(ubutton);
+
+		abutton = new Button("Auto Update");
+		abutton.setBounds(400,50,100,50);
+		abutton.setBackground(Color.lightGray);		
+		add(abutton);
+
+		ubutton.addActionListener(this);
+		abutton.addActionListener(this);
+
+		rlist = new List();
+		for (i = 1; i<=256; i++)
+		{
+			rlist.add(i+" x "+i);
+		}
+
+		blist = new List();
+		for (i = 1; i<=8; i++)
+		{
+			blist.add(i+" Bit");
+		}
+
+		rlist.setBounds(400,100,100,100);
+		blist.setBounds(400,200,100,100);
+		rlist.setBackground(Color.white);
+		rlist.setForeground(Color.black);		
+		blist.setBackground(Color.white);
+		blist.setForeground(Color.black);				
+		add(rlist); add(blist);
+
+		cbg = new CheckboxGroup();
+		fcheck = new Checkbox("Farbe",cbg,false);
+		gcheck = new Checkbox("Grau",cbg,true);
+
+		fcheck.setBounds(410,310,80,30);
+		gcheck.setBounds(410,340,80,30);		
+		fcheck.setForeground(Color.white);
+		gcheck.setForeground(Color.white);
+		add(fcheck);
+		add(gcheck);
+
+		mt = new MediaTracker(this);
+		
+	}
+
+
+
+	public void actionPerformed (ActionEvent ActEvt)
+	{	
+		String cmd = ActEvt.getActionCommand();
+
+		if (cmd=="Update")
+		{
+			showStatus("Update pressed");
+			gifholen();
+			repaint();
+		}
+		
+		if (cmd=="Auto Update")
+		{
+			showStatus("Auto Update pressed");
+		}
+	}
+
+
+
+	public void gifholen()
+	{	
+		resolution = new Integer (rlist.getSelectedIndex()+1);
+		bitdepth   = new Integer (blist.getSelectedIndex()+1);
+
+		if (fcheck.getState())	{	colormode = new Integer ( 3 );	}
+		else					{	colormode = new Integer ( 1 );	}
+
+		Image himage = getImage (getDocumentBase(), "cgi-bin/dimagen.cgi?"+resolution.toString()+"+"+bitdepth.toString()+"+"+colormode.toString() );
+
+		mt.addImage(himage,0);
+			try{ mt.waitForAll();}
+			catch (InterruptedException e) { }
+		mt.removeImage(himage,0);
+
+		image=himage;
+		himage.flush();
+	}
+
+	
+
+}

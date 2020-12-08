@@ -1,0 +1,32 @@
+<html>
+    <head>
+    <meta name="description" content="The universal image generator.">
+    <meta name="keywords" content="Imagen,Determinism,Art,Determinismus,Kunst">   
+	<meta name="author" content="Leander Seige">       
+	<title>Imagen</title>
+	<script language="JavaScript">	
+	var mywin=window.open("usage.html","I","width=450,height=300,screenX=0,screenY=0,locationbar=no,menubar=no,toolbar=no,scrollbars=yes,resizable=yes");
+	function doimawin(url)	
+	{	
+	if (mywin.closed == true)
+{
+mywin=window.open(url,"I","width=450,height=300,screenX=0,screenY=0,locationbar=no,menubar=no,toolbar=no,scrollbars=yes,resizable=yes");
+}
+	else
+{
+mywin.close();
+mywin=window.open(url,"I","width=450,height=300,screenX=0,screenY=0,locationbar=no,menubar=no,toolbar=no,scrollbars=yes,resizable=yes");
+}
+	mywin.focus();
+
+	}
+	</script>
+    </head>
+   	<body bgcolor=#333366 text=#8888FF> <!-- bgcolor=#333366 -->
+	<center>
+		<applet code=ImagenApplet.class width=700 height=400 MAYSCRIPT>
+		</applet>
+	</center>
+    </body>
+</html>
+
