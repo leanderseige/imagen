@@ -12,7 +12,15 @@ The original interface was a Java applet with many options to turn the pattern i
 
 ![ImageN Logo](/2000/html/bits.gif)
 
-The generator started in the year 2000 but was offline from 2004 to 2020.
+The generator was my intermediate diploma at the Academy of Fine Arts Leipzig (HGB Leipzig). It went online in July 2000. From 2004 to 2020 ImageN was offline most of the time.
+
+# Visit the ImageN server: https://imagen.manducus.net
+
+# This Repository
+
+The folder 2020/ contains everything that is needed to run a ImageN instance.
+
+The folder 2000/ contains many assorted sources and components used in the original version from 2000.
 
 # Literature
 
