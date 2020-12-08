@@ -13,7 +13,7 @@ class DisplayCanvas extends React.Component {
       2: ["#000","#555","#aaa","#fff"],
       3: ["#000","#00f","#0f0","#0ff","#f00","#f0f","#ff0","#fff"]
     }
-    let depth=2
+    let depth=this.props.colormode
 
     for(let y=0; y<16; y++) {
       for(let x=0; x<16; x++) {
