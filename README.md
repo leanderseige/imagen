@@ -1,6 +1,6 @@
 ![ImageN Logo](/2020/html/imagen-tight.png)
 
-ImageN is an art project that works with the contrast of computability and complexity.
+ImageN is an art project from 2000 that works with the contrast of computability and complexity.
 https://imagen.manducus.net
 
 ImageN is an image generator that uses a single integer with an accuracy of 65535 bits to generate every possible image. The generator initialized the integer with the value 0 and now constantly adds the value 1 in order to generate every possible pattern and thus every possible image.
